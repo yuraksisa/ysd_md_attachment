@@ -18,6 +18,21 @@ module Model
     property :id, String, :field => 'id', :length => 32, :key => true
     property :adapter, String, :field => 'adapter', :length => 32
     belongs_to :account, 'ExternalIntegration::ExternalServiceAccount', :child_key => ['account_id'], :parent_key => ['id'], :required => false
+
+    alias old_save save
+    
+    #
+    # Saves the album
+    #
+    def save
+        
+      if self.account and (not self.account.saved?)
+        self.account = ExternalIntegration::ExternalServiceAccount.get(self.account.id)
+      end
+     
+      old_save
+    
+    end    
         
     #
     # Stores the file
@@ -80,6 +95,42 @@ module Model
     
       get_adapter.download_streaming(remote_path, &block)
 
+    end
+
+
+    # ================= Finders =================================
+    
+    #
+    # Find storages
+    #
+    # @param [Hash] options
+    #   
+    #   :limit
+    #   :offset
+    #   :count
+    #
+    # @return [Array]
+    #    
+    def self.find_all(options={})
+        
+      limit = options[:limit] || 10
+      offset = options[:offset] || 0
+      count = options[:count] || true     
+   
+      result = []
+      
+      result << Storage.all({:limit => limit, :offset => offset})
+      
+      if count
+        result << Storage.count
+      end
+      
+      if result.length == 1
+        result = result.first
+      end
+      
+      result
+   
     end
     
     private

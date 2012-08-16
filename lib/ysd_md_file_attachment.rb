@@ -24,7 +24,7 @@ module Model
           
      property :id, Serial, :field => 'id', :key => true
      property :path, String, :field => 'path', :length => 256
-     property :file_size,  Decimal, :field => 'file_size'
+     property :file_size,  Decimal, :field => 'file_size', :precision => 12, :scale => 2
      belongs_to :storage, '::Model::Storage', :child_key => [:storage_id], :parent_key => [:id] # The storage which manages the file
      
      #    

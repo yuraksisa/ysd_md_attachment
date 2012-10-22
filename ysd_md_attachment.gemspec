@@ -6,12 +6,14 @@ Gem::Specification.new do |s|
   s.email   = ["yurak.sisa.dream@gmail.com"]
   s.files   = Dir['lib/**/*.rb']
   s.summary = "Yurak Sisa Attachments model"
-  
-  s.add_runtime_dependency "data_mapper", "1.1.0"
+  s.homepage = "http://github.com/yuraksisa/ysd_md_attachment"
+    
+  s.add_runtime_dependency "data_mapper", "1.2.0"
   s.add_runtime_dependency "google_drive", "0.3.1"
   s.add_runtime_dependency "mime-types", "1.19"
 
   s.add_runtime_dependency "ysd_md_integration"   # External account service
   s.add_runtime_dependency "ysd-persistence"      # Persistence system
+  s.add_runtime_dependency "ysd_core_plugins"     # Aspects
     
 end

@@ -1,67 +1,9 @@
 module Model
  
   #
-  # Attachment management module
-  #
-  module Attachment
-  
-    #
-    # Attach a new file from a local path
-    #
-    # @param [::Model::Storage] storage
-    # @param [String] remote path
-    # @param [String] local file path
-    #
-    def attach_from_file(storage, remote_path, local_file_path)
-      
-      # Create the attachment
-      file_attachment = FileAttachment::create_from_file(storage, remote_path, local_file_path)
-      
-      # Adds the attachment
-      add_attachment(file_attachment.id)
-      
-    end
-    
-    #
-    # Attach a new file from an io
-    #
-    # @param [::Model::Storage] storage
-    # @param [String] remote_path
-    # @param [IO] io
-    # @param [Numeric] file_size
-    #
-    def attach_from_io(storage, remote_path, io, file_size)
-    
-      # Create the attachment
-      file_attachment = FileAttachment::create_from_io(storage, remote_path, io, file_size)
-      
-      # Adds the attachment
-      add_attachment(file_attachment.id)
-        
-    end
-    
-    #
-    # Dettach a attachment
-    #
-    # @param [Numeric] 
-    #   The file attachment id
-    #
-    def dettach(id)
-      
-      remove_attachment(file_attachment.id)
-
-      file_attachment = FileAttachment.get(id)
-      file_attachment.destroy
-             
-    end
-    
-  end
-
-  #
   # It's a module you can include in your class to manage attachments
   #
   module AttachmentPersistence
-    include Attachment
   
     def self.included(model)
       model.property :attachments
@@ -71,7 +13,7 @@ module Model
     # Adds an existing attachment
     #
     def add_attachment(attachment_id) 
-      element_attachments = Array(attribute_get(:attachment)) || []
+      element_attachments = Array(attribute_get(:attachments)) || []
       element_attachments << file_attachment.id
       
       # Sets the attachments
@@ -121,14 +63,20 @@ module Model
       removed_attachments = nil
       new_attachments = nil
       
-      if @old_attachments
-         removed_attachments = @old_attachments - attribute_get(:attachements)
-         added_attachments = attribute_get(:attachments) - @old_attachments 
+      current_attachments = attribute_get(:attachments) || []
+    
+      if current_attachments == '' #TODO a bug in persitence (CHECK SOON)
+        current_attachments = []
+      end
+      
+      if not @old_attachments.nil? 
+         removed_attachments = @old_attachments - current_attachments
+         new_attachments = current_attachments - @old_attachments 
       end
       
       super
 
-      if removed_attachments
+      unless removed_attachments.nil?
         FileAttachment.all(:id => removed_attachments).destroy
       end
       
@@ -140,7 +88,11 @@ module Model
     #
     def attribute_set(name, value)  
       if (name.to_sym == :attachments)
-        @old_attachments = attribute_get(:attachments)
+        value = [] if value == ''  #TODO a bug in persitence (CHECK SOON)
+        @old_attachments = attribute_get(:attachments) || []
+        if @old_attachments == ''  #TODO a bug in persitence (CHECK SOON)
+          @old_attachments = []
+        end
       end
 
       super(name, value)

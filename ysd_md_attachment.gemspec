@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "data_mapper", "1.2.0"
   s.add_runtime_dependency "google_drive", "0.3.1"
   s.add_runtime_dependency "mime-types", "1.19"
-
+  
   s.add_runtime_dependency "ysd_md_integration"   # External account service
   s.add_runtime_dependency "ysd-persistence"      # Persistence system
   s.add_runtime_dependency "ysd_core_plugins"     # Aspects

@@ -23,7 +23,7 @@ module Model
     #
     # Removes an attachment reference
     #
-    def remote_attachment(attachment_id)
+    def remove_attachment(attachment_id)
       attribute_get(:attachments).delete(attachment_id)
     end    
 

@@ -1,4 +1,5 @@
 require 'data_mapper' unless defined?DataMapper
+require 'ysd_md_integration' unless defined?ExternalIntegration::ExternalServiceAccount
 
 module Model
   #
@@ -13,7 +14,7 @@ module Model
   class Storage
     include DataMapper::Resource
     
-    storage_names[:default] = 'attach_storage'
+    storage_names[:default] = 'attach_storages'
     
     property :id, String, :field => 'id', :length => 32, :key => true
     property :adapter, String, :field => 'adapter', :length => 32
@@ -41,7 +42,7 @@ module Model
     #   The file path in the storage system
     #
     # @param [String] file
-    #   The local path of file to store 
+    #   The local file to store the item
     #
     def store_from_file(remote_path, local_file_path)
       get_adapter.store_file(remote_path, local_file_path)
@@ -69,6 +70,9 @@ module Model
     
     #
     # Retrieve the file to the local storage
+    #
+    # @param[String] The remote path
+    # @param[String] the local file to write on the item
     #
     def retrieve_to_file(remote_path, local_file_path)
       get_adapter.retrieve_file_to_file(remote_path, local_file_path)

@@ -1,6 +1,5 @@
+require 'ysd_md_file_set_attachment'
 require 'ysd_md_file_attachment'
 require 'ysd_md_storage'
 require 'ysd_md_googledrive_storage_adapter'
 require 'ysd_md_attachment_base'
-require 'ysd_md_attachment_persistence'
-require 'ysd_md_attachment_datamapper'

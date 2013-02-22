@@ -8,7 +8,7 @@ module Model
   #
   # Google Drive Storage Adapter
   #
-  # Use:
+  # Usage:
   #
   # gd_sa = ::Model::GoogledriveStorageAdapter.new(account)
   # gd_sa.store_file('my_file', localpath)
@@ -35,6 +35,8 @@ module Model
     #
     # Store the file in Google Drive
     #
+    # @param [String] the file name on the storage
+    # @param [String] the file path to read from
     # 
     def store_file(file_path, local_file_path)
     

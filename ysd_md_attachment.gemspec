@@ -15,5 +15,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "ysd_md_integration"   # External account service
   s.add_runtime_dependency "ysd-persistence"      # Persistence system
   s.add_runtime_dependency "ysd_core_plugins"     # Aspects
-    
+  s.add_runtime_dependency "ysd_md_configuration" # Configuration
+      
 end

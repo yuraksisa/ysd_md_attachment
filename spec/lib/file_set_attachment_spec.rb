@@ -3,7 +3,8 @@ require 'spec_helper'
 describe Model::FileSetAttachment do 
   
   let(:file) { StringIO.new('Hello World') }
-  let(:storage) { Model::Storage.first_or_create({:id => 'my_google_drive_2', :adapter => 'googledrive'}) }
+  let(:storage) { Model::Storage.first_or_create({:id => 'my_google_drive_2', 
+                                                  :adapter => 'googledrive'}) }
   
   #describe "#add_attachment_from_file" do
   #
@@ -23,7 +24,8 @@ describe Model::FileSetAttachment do
     
         # Create an attachment 
         file_set_attachment = Model::FileSetAttachment.create
-        file_attachment = file_set_attachment.add_attachment_from_io(storage, 'path/to/remote2', file, file.size)
+        file_attachment = file_set_attachment.add_attachment_from_io(storage, 
+          'path/to/remote2', file, file.size)
         file_attachment.download_to_io(data_io = StringIO.new)
     
         [data_io, file].each { |item| item.rewind }

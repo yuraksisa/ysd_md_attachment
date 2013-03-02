@@ -23,7 +23,7 @@ describe Model::Attachment do
         file_attachment.download_to_io(data_io = StringIO.new)
 
         [data_io, file].each { |item| item.rewind }
-        data_io.read.should == file.read
+        data_io.read.should == file.read        
       end
 
       it "should use the default storage" do
@@ -37,7 +37,9 @@ describe Model::Attachment do
         post.should_receive(:default_storage).and_return(storage)
     
         file_attachment = nil 
-        expect {file_attachment = post.add_attachment_from_io('path/to/remote4', file, file.size)}.not_to raise_error
+        expect {file_attachment = post.add_attachment_from_io('path/to/remote4', 
+                                                              file, 
+                                                              file.size)}.not_to raise_error
 
         file_attachment.download_to_io(data_io = StringIO.new)
 

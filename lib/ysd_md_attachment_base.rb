@@ -36,12 +36,28 @@ module Model
       if model.respond_to?(:belongs_to)
         model.belongs_to :file_set_attachment, 'Model::FileSetAttachment', :parent_key => [:id], :child_key => [:file_set_attachment_id], :required => false
       end  
+
+      if model.respond_to?(:has)
+        model.has Infinity, :attachments, 'Model::FileAttachment', :through => :file_set_attachment, :via => :file_attachments
+      end
     
     end
      
     def save
       check_file_set_attachment! if file_set_attachment
       super
+    end
+
+    #
+    # Exporting the attachments
+    # 
+    def as_json(options={})
+     
+      relationships = options[:relationships] || {}
+      relationships.store(:attachments, {})
+      
+      super(options.merge({:relationships => relationships}))
+
     end
 
     #
@@ -138,8 +154,9 @@ module Model
     #
     def check_file_set_attachment!
 
-      if file_set_attachment and not (file_set_attachment.saved?) and loaded_file_set_attachment = FileSetAttachment.get(file_set_attachment.id)
-        file_set_attachment = FileSetAttachment.get(file_set_attachment.id)
+      if file_set_attachment and not (file_set_attachment.saved?) and 
+         loaded_file_set_attachment = FileSetAttachment.get(file_set_attachment.id)
+        self.file_set_attachment = loaded_file_set_attachment
       end
 
     end  

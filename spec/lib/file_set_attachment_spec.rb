@@ -23,7 +23,7 @@ describe Model::FileSetAttachment do
         end
     
         # Create an attachment 
-        file_set_attachment = Model::FileSetAttachment.create
+        file_set_attachment = Model::FileSetAttachment.new
         file_attachment = file_set_attachment.add_attachment_from_io(storage, 
           'path/to/remote2', file, file.size)
         file_attachment.download_to_io(data_io = StringIO.new)

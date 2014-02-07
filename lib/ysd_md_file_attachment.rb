@@ -26,7 +26,7 @@ module Model
      property :path, String, :field => 'path', :length => 256
      property :file_size,  Decimal, :field => 'file_size', :precision => 12, :scale => 2 # File size in bytes
      belongs_to :storage, '::Model::Storage', :child_key => [:storage_id], :parent_key => [:id] # The storage which manages the file
-     belongs_to :file_set_attachment, 'FileAttachment', :child_key => [:file_set_attachment_id], :parent_key => [:id] # The attachment file set
+     belongs_to :file_set_attachment, 'FileSetAttachment', :child_key => [:file_set_attachment_id], :parent_key => [:id] # The attachment file set
      
      #    
      # Retrieve the literal file size
@@ -71,7 +71,11 @@ module Model
      #
      def self.create_from_io(file_set_attachment, storage, remote_path, io, file_size=0)
        
-       file_attachment = FileAttachment.new(:file_set_attachment => file_set_attachment, :path => remote_path, :storage => storage, :file_size => file_size)        
+       file_attachment = FileAttachment.new(
+          :file_set_attachment => file_set_attachment, 
+          :path => remote_path, 
+          :storage => storage, 
+          :file_size => file_size)        
        file_attachment.upload_from_io(io)
        file_attachment.save
      
@@ -93,7 +97,10 @@ module Model
      #
      def self.create_from_file(file_set_attachment, storage, remote_path, file_path)
      
-       file_attachment = FileAttachment.new(:file_set_attachment => file_set_attachment, :path => remote_path, :storage => storage, :file_size => File.size(file_path))
+       file_attachment = FileAttachment.new(:file_set_attachment => file_set_attachment, 
+          :path => remote_path, 
+          :storage => storage, 
+          :file_size => File.size(file_path))
        file_attachment.upload_from_file(file_path)
        file_attachment.save
        
@@ -147,6 +154,16 @@ module Model
      
      end
      
+     #
+     # The remote file public url
+     #
+     # @return [String] the file URL
+     def file_url
+       
+       storage.file_url(path)
+
+     end
+
      #
      # As json overriden extended
      #

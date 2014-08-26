@@ -9,7 +9,6 @@ module Model
   # === Define the storage or retrieve from its name
   #
   # storage = Model::Storage.create(:id=>'my_storage', :adapter=>'googledrive', :account => ::ExternalIntegration::ExternalServiceAccount.get('my_account'))
-  #
   # storage = Model::Storage.get('my_storage') 
   #
   # === Use the storage to upload files

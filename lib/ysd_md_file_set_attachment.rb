@@ -11,6 +11,8 @@ module Model
     storage_names[:default] = 'attach_fileset_attachments'
 
     property :id, Serial, :field => 'id', :key => true
+    property :name, String, :field => 'name', :length => 80
+    property :root, Boolean, :field => 'boolean', :default => true
     has n, :file_attachments, 'FileAttachment', :child_key => [:file_set_attachment_id], :parent_key => [:id]
 
     #
@@ -77,10 +79,10 @@ module Model
     
     def as_json(opts={})
 
-      relationships = opts[:relationships] || {}
-      relationships.store(:file_attachments, {})
+      methods = opts[:methods] || []
+      methods << :file_attachments
 
-      super(opts.merge(relationships))
+      super(opts.merge(:methods => methods))
 
     end
 
